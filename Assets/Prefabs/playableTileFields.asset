@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e476112ac7851348ad2ca748960c9d8, type: 3}
+  m_Name: playableTileFields
+  m_EditorClassIdentifier: 
+  playableTiles:
+  - {fileID: 11400000, guid: ec3a712e05cb0274280076ceb8b7eea9, type: 2}
+  - {fileID: 11400000, guid: 5873fba02c772954bb5332e6788e5d66, type: 2}
+  - {fileID: 11400000, guid: 241d769f277a66243bce845ca48758c8, type: 2}
+  - {fileID: 11400000, guid: e52b8e5976100ba48a0ee37886b1bdc3, type: 2}
+  - {fileID: 11400000, guid: 2c5d479cf2f23fc44b41811f9aa2e7ca, type: 2}
+  - {fileID: 11400000, guid: 810392232e178f340a022f8f56bb8bc2, type: 2}
