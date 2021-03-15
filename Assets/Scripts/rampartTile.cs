@@ -37,7 +37,7 @@ public class rampartTile
         }
 
         //Dodane
-        parrentTileMapClone = Object.Instantiate(_parrentTilemap, new Vector3(_parrentTilemap.transform.position.x, _parrentTilemap.transform.position.y, _parrentTilemap.transform.position.z -1), _parrentTilemap.transform.rotation);
+        //parrentTileMapClone = Object.Instantiate(_parrentTilemap, new Vector3(_parrentTilemap.transform.position.x, _parrentTilemap.transform.position.y, _parrentTilemap.transform.position.z -1), _parrentTilemap.transform.rotation);
     }
 
     public void setNewTileBase(TileBase _incomingTileBase)
