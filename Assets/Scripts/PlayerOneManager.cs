@@ -131,7 +131,7 @@ public class PlayerOneManager : MonoBehaviour
                         if (tempTile == singleTileBase)
                         {
                             tempTile.flags = TileFlags.None;
-                            //playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
+                            playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
                             isPlayable = true;
                             if ((Mathf.Abs(x) % 2) == (Mathf.Abs(y) % 2))
                             {
@@ -155,7 +155,7 @@ public class PlayerOneManager : MonoBehaviour
         tempBound.xMax = tempMapMaxSizeX;
         tempBound.yMin = tempMapMinSizeY;
         tempBound.yMax = tempMapMaxSizeY;
-        //playerMap.RefreshAllTiles();
+        playerMap.RefreshAllTiles();
         return tempBound;
 
     }
