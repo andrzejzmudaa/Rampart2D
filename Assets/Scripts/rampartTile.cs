@@ -9,12 +9,12 @@ public class rampartTile
     TileBase originalBaseTile;
     public readonly bool isPlayable;
     public readonly bool borderTile;
+    public readonly bool greyed;
     
     TileBase modifiedTileBase;
     Vector3Int tilePos;
 
     private Tilemap parrentTilemapRef;
-    private Tilemap parrentTileMapClone;
     public tileAlgorithmStatus cellStatus;
 
 
@@ -25,7 +25,7 @@ public class rampartTile
     public Vector3Int TilePos { get => tilePos;  }
     //public tileAlgorithmStatus cellStatus { get => cellStatus; set => cellStatus = value; }
 
-    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable)
+    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable, Color _playerColor , Material _colorMaterial)
     {
         this.tilePos = convertVector2IntToVector3Int(_tilePos2d);
         parrentTilemapRef = _parrentTilemap;
@@ -35,9 +35,6 @@ public class rampartTile
             this.originalSprite = _parrentTilemap.GetSprite(tilePos);
             originalBaseTile = _parrentTilemap.GetTile(tilePos);
         }
-
-        //Dodane
-        //parrentTileMapClone = Object.Instantiate(_parrentTilemap, new Vector3(_parrentTilemap.transform.position.x, _parrentTilemap.transform.position.y, _parrentTilemap.transform.position.z -1), _parrentTilemap.transform.rotation);
     }
 
     public void setNewTileBase(TileBase _incomingTileBase)

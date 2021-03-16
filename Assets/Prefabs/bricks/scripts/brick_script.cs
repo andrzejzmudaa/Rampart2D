@@ -200,7 +200,6 @@ public class brick_script : MonoBehaviour
             foreach(rampartTile singleTile in tempRampartTileListToModify)
             {
                 singleTile.setNewTileBase(brickTile);
-
             }
 
         }

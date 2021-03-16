@@ -174,7 +174,7 @@ public class budzyn
 
 
 
-    public static void processMap2D(Dictionary<Vector2Int, rampartTile> _playerTiles, BoundsInt _mapBounds ,Tilemap _incomingPlayerMap)
+    public static void processMap2D(Dictionary<Vector2Int, rampartTile> _playerTiles, BoundsInt _mapBounds ,Tilemap _incomingPlayerMap ,Color _playerColor)
     {
         rampartTile tempRampartTile;
    
@@ -297,7 +297,15 @@ public class budzyn
                 if (tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.NotDefinedYet)
                 {
                     tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.Internal;
-                    _incomingPlayerMap.SetTile(tempRampartTile.TilePos, null);
+                    //_incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b));
+                    if ((Mathf.Abs(tempRampartTile.TilePos.x) % 2) == (Mathf.Abs(tempRampartTile.TilePos.y) % 2))
+                    {
+                        _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.1f));
+                    }
+                    else
+                    {
+                        _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.7f));
+                    }
                 }
                
             }
