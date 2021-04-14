@@ -15,12 +15,17 @@ public class PlayerOneManager : MonoBehaviour
     private BoundsInt mapBordersCounted;
     private GameObject brickref;
     private Dictionary<Vector2Int, rampartTile> playerTiles;
+    private brick_script brickPrefabInstance;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
+        //brickPrefabInstance = brickPrefab;
+        brickPrefabInstance = GameObject.Instantiate<brick_script>(brickPrefab);
+        brickPrefabInstance.InitializazeFunction();
+        brickPrefabInstance.setPlayerColor(playerColor);
         playerMap.CompressBounds();
         playerMapClone = Object.Instantiate(playerMap, new Vector3(playerMap.transform.position.x, playerMap.transform.position.y, playerMap.transform.position.z - 1), playerMap.transform.rotation, playerMap.transform);
         playerMapClone.color = playerColor;
@@ -31,9 +36,10 @@ public class PlayerOneManager : MonoBehaviour
         TileBase[] allTiles = playerMap.GetTilesBlock(playerMap.cellBounds);
 
         mapBordersCounted = initializePlayerTilesDictionary();
-        
-        brickPrefab.setInitialPositionInMiddle(mapBordersCounted);
-        brickPrefab.setPlayerColor(playerColor);
+
+
+        brickPrefabInstance.setInitialPositionInMiddle(mapBordersCounted, playerMap);
+        //brickPrefabInstance.setPlayerColor(playerColor);
         //playerMap.EditorPreviewFloodFill(Vector3Int.zero, new Tile());
         //playerMap.BoxFill(Vector3Int.zero, new Tile(), playerMap.cellBounds.min.x, playerMap.cellBounds.min.y, playerMap.cellBounds.max.x, playerMap.cellBounds.max.y);
 
@@ -68,31 +74,31 @@ public class PlayerOneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            brickPrefab.rotateBrick(playerMapClone, playerTiles);
+            brickPrefabInstance.rotateBrick(playerMapClone, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            brickPrefab.moveBrickUp(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickUp(playerMapClone, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            brickPrefab.moveBrickDown(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickDown(playerMapClone, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            brickPrefab.moveBrickLeft(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickLeft(playerMapClone, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            brickPrefab.moveBrickRight(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickRight(playerMapClone, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (brickPrefab.setBricksOccupiedOnMap(playerMapClone, playerTiles))
+            if (brickPrefabInstance.setBricksOccupiedOnMap(playerMapClone, playerTiles))
             {
                 budzyn.processMap2D(playerTiles, mapBordersCounted , playerMap , playerColor);
                 playerMapClone.RefreshAllTiles();
-                brickPrefab.setRandomBrickFromList();
+                brickPrefabInstance.setRandomBrickFromList();
                 
             }
         }
@@ -146,7 +152,7 @@ public class PlayerOneManager : MonoBehaviour
                     }
 
                     Vector2Int tempVector2int = new Vector2Int(x, y);
-                    playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapClone, isPlayable, playerColor, brickPrefab.colorMaterial));
+                    playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapClone, isPlayable));
                 }
             }
         }

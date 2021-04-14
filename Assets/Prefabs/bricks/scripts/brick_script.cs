@@ -10,6 +10,7 @@ public class brick_script : MonoBehaviour
     public Sprite borderBrickSprite;
     public Sprite brickSprite;
     public brickTemplatesContainer availableBricks;
+    public Material outlineMaterial;
     private brickTemplate brickProperties;
     private brickPropertiesClass.angleType angle;
     private bool[,] occupied_matrix4x4;
@@ -21,11 +22,17 @@ public class brick_script : MonoBehaviour
     private Tile brickTile;
     private Tile borderTile;
     Tile emptyTile;
-    public Material colorMaterial;
-    public Material borderMaterial;
+    private Material outlineMaterialLocalInstance;
 
     // Start is called before the first frame update
     void Start()
+    {
+        InitializazeFunction();
+        //setPlayerColor(Color.white);
+
+    }
+
+    public void InitializazeFunction()
     {
         thisObject = this.gameObject;
         angle = brickPropertiesClass.angleType.A0deg;
@@ -34,25 +41,19 @@ public class brick_script : MonoBehaviour
         localTilemapRenderer = this.gameObject.GetComponent<TilemapRenderer>();
         emptyTile = new Tile();
         brickTile = new Tile();
-        borderTile = new Tile(); 
+        borderTile = new Tile();
         brickTile.sprite = brickSprite;
         borderTile.sprite = borderBrickSprite;
+        outlineMaterialLocalInstance = localTilemapRenderer.material;
+        //outlineMaterialLocalInstance = Instantiate(outlineMaterial);
+        //localTilemapRenderer.material = outlineMaterialLocalInstance;
         //brickTile.sprite.
 
 
         //printBool2dArray(brickProperties.getBoolean2dMatrix());
         //Debug.Log("Dane: "+ getBoolean2dMatrix(brickProperties));
         setRandomBrickFromList();
-
-        
-
-
-
         setTilesAccordingTo2dMatrix(brickProperties.getBoolean2dMatrix(angle));
-        
-
-
-
     }
 
     // Update is called once per frame
@@ -219,25 +220,14 @@ public class brick_script : MonoBehaviour
         return localTilemap.GetCellCenterWorld(new Vector3Int(1, -2, 0));
     }
 
-    public void setInitialPositionInMiddle(BoundsInt _inputBounds)
+    public void setInitialPositionInMiddle(BoundsInt _inputBounds , Tilemap _playerMap)
     {
-        thisObject.transform.position = new Vector3((_inputBounds.xMax - (_inputBounds.xMax - _inputBounds.xMin) / 2), (_inputBounds.yMax - (_inputBounds.yMax - _inputBounds.yMin) / 2), thisObject.transform.position.z);       
+        thisObject.transform.position = new Vector3((_inputBounds.xMax - (_inputBounds.xMax - _inputBounds.xMin) / 2) + _playerMap.transform.position.x, (_inputBounds.yMax - (_inputBounds.yMax - _inputBounds.yMin) / 2) + _playerMap.transform.position.y, thisObject.transform.position.z);       
     }
 
     public void setPlayerColor(Color _inputColor)
     {
-        Color localInputColor = _inputColor;
-        localInputColor.a = 1;
-        colorMaterial.color = localInputColor;
-        borderMaterial.color = localInputColor;
-        Debug.Log("Material is : " + borderMaterial.color);
-        //localTilemapRenderer.material = borderMaterial;
-
-
-
-
-
-
+        outlineMaterialLocalInstance.color = _inputColor*6f;
     }
 
 }

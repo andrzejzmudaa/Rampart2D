@@ -25,7 +25,7 @@ public class rampartTile
     public Vector3Int TilePos { get => tilePos;  }
     //public tileAlgorithmStatus cellStatus { get => cellStatus; set => cellStatus = value; }
 
-    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable, Color _playerColor , Material _colorMaterial)
+    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable)
     {
         this.tilePos = convertVector2IntToVector3Int(_tilePos2d);
         parrentTilemapRef = _parrentTilemap;

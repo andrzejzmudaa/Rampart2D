@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8993069157294975623
+--- !u!1 &2124276455881541186
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8993069157294975620}
-  - component: {fileID: 8993069157294975621}
-  - component: {fileID: 8993069157294975616}
-  - component: {fileID: 8993069157294975619}
-  - component: {fileID: 8993069157294975618}
+  - component: {fileID: 2124276455881541185}
+  - component: {fileID: 2124276455881541184}
+  - component: {fileID: 2124276455881541189}
+  - component: {fileID: 2124276455881541190}
+  - component: {fileID: 2124276455881541191}
   m_Layer: 0
   m_Name: brick_prefab
   m_TagString: Untagged
@@ -20,13 +20,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8993069157294975620
+--- !u!224 &2124276455881541185
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993069157294975623}
+  m_GameObject: {fileID: 2124276455881541186}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -39,42 +39,41 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 4, y: 4}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8993069157294975621
+--- !u!114 &2124276455881541184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993069157294975623}
+  m_GameObject: {fileID: 2124276455881541186}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ed4498dfad012449b75b08afb3efcaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  borderBrickSprite: {fileID: 21300000, guid: 4387df088bcf57f4994ac12dc67e4a86, type: 3}
-  brickSprite: {fileID: 21300000, guid: 582b817626dbfcb43ac6e1631fb0ab7e, type: 3}
+  borderBrickSprite: {fileID: 21300000, guid: 21be3bfe33f8f184c9825c4ea37358e1, type: 3}
+  brickSprite: {fileID: 21300000, guid: 9936d90e1dc53c5498f68869af7f1403, type: 3}
   availableBricks: {fileID: 11400000, guid: 4fc90e1cbd892ed42a288b587f59c3b7, type: 2}
-  colorMaterial: {fileID: 2100000, guid: f7a5d72a350bf704abbf09cbad2c0ada, type: 2}
-  borderMaterial: {fileID: 2100000, guid: 780b840bd5b70e3478c23118faa4f130, type: 2}
---- !u!156049354 &8993069157294975616
+  outlineMaterial: {fileID: 2100000, guid: 2111c2b52540cbf47a543f17eec54e31, type: 2}
+--- !u!156049354 &2124276455881541189
 Grid:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993069157294975623}
+  m_GameObject: {fileID: 2124276455881541186}
   m_Enabled: 1
   m_CellSize: {x: 1, y: 1, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!1839735485 &8993069157294975619
+--- !u!1839735485 &2124276455881541190
 Tilemap:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993069157294975623}
+  m_GameObject: {fileID: 2124276455881541186}
   m_Enabled: 1
   m_Tiles: {}
   m_AnimatedTiles: {}
@@ -135,13 +134,13 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!483693784 &8993069157294975618
+--- !u!483693784 &2124276455881541191
 TilemapRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8993069157294975623}
+  m_GameObject: {fileID: 2124276455881541186}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -153,7 +152,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 780b840bd5b70e3478c23118faa4f130, type: 2}
+  - {fileID: 2100000, guid: 2111c2b52540cbf47a543f17eec54e31, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
