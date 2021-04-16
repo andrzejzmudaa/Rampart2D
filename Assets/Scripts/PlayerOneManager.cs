@@ -9,6 +9,7 @@ public class PlayerOneManager : MonoBehaviour
     private Tilemap playerMapClone;
     public Color playerColor;
     public TileData playableTiles;
+    public TileData castleTiles;
     public brick_script brickPrefab;
     private float mapGridSizeX;
     private float mapGridSizeY;
@@ -120,40 +121,52 @@ public class PlayerOneManager : MonoBehaviour
             for (int y = playerMap.cellBounds.min.y; y < playerMap.cellBounds.max.y; y++)
             {
                 Tile tempTile = (Tile)playerMap.GetTile(new Vector3Int(x, y, 0));
-                
-                
-                    if (x < tempMapMinSizeX)
+
+                if (x < tempMapMinSizeX)
                         tempMapMinSizeX = x;
-                    if (x > tempMapMaxSizeX)
+                if (x > tempMapMaxSizeX)
                         tempMapMaxSizeX = x;
-                    if (y < tempMapMinSizeY)
+                if (y < tempMapMinSizeY)
                         tempMapMinSizeY = y;
-                    if (y > tempMapMaxSizeY)
+                if (y > tempMapMaxSizeY)
                         tempMapMaxSizeY = y;
 
-                    bool isPlayable = false;
-                    if (tempTile != null)
+                bool isPlayable = false;
+                bool isCastleTile = false;
+                bool isOccupied = false;
+                if (tempTile != null) 
+                { 
                     foreach (TileBase singleTileBase in playableTiles.playableTiles)
                     {
                         if (tempTile == singleTileBase)
                         {
-                            tempTile.flags = TileFlags.None;
-                            playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
-                            isPlayable = true;
-                            if ((Mathf.Abs(x) % 2) == (Mathf.Abs(y) % 2))
+                        tempTile.flags = TileFlags.None;
+                        playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
+                        isPlayable = true;
+                        if ((Mathf.Abs(x) % 2) == (Mathf.Abs(y) % 2))
+                        {
+                            playerMap.SetColor(new Vector3Int(x, y, 0), new Color(1.0f, 1.0f, 1.0f, 0.8f));
+                        }
+                        else
+                        {
+                            playerMap.SetColor(new Vector3Int(x, y, 0), new Color(1.0f, 1.0f, 1.0f, 1.0f));
+                        }
+
+                        }
+                        foreach (TileBase singleCastleTileBase in castleTiles.playableTiles)
+                        {
+                            if (tempTile == singleCastleTileBase)
                             {
-                                playerMap.SetColor(new Vector3Int(x, y, 0), new Color(1.0f, 1.0f, 1.0f, 0.8f));
+                                isCastleTile = true;
+
                             }
-                            else
-                            {
-                                playerMap.SetColor(new Vector3Int(x, y, 0), new Color(1.0f, 1.0f, 1.0f, 1.0f));
-                            }
-                            
+
                         }
                     }
+                }
 
                     Vector2Int tempVector2int = new Vector2Int(x, y);
-                    playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapClone, isPlayable));
+                    playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapClone, isPlayable ,  isOccupied));
                 
             }
         }

@@ -183,8 +183,7 @@ public class budzyn
             for (int j = _mapBounds.yMin; j <= _mapBounds.yMax; j++)
             {
                 _playerTiles.TryGetValue(new Vector2Int(i, j), out tempRampartTile);
-
-                if (tempRampartTile.isOccupied)
+                if (tempRampartTile.isOccupied && tempRampartTile.isPlayable)
                     tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.Wall;
                 // if on edge
                 if ((i == _mapBounds.xMin) || (i == _mapBounds.xMax) || (j == _mapBounds.yMin) || (j == _mapBounds.yMax))
@@ -266,7 +265,7 @@ public class budzyn
                                 //If already status is known,skip all calculations and continue with next
                                 if (tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.NotInternal || tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.Wall)
                                     continue;
-                                if (tempRampartTile.isOccupied)
+                                if (tempRampartTile.isOccupied && tempRampartTile.isPlayable)
                                 {
                                     tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.Wall;
 

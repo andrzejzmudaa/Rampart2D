@@ -8,6 +8,7 @@ public class rampartTile
     Sprite originalSprite;
     TileBase originalBaseTile;
     public readonly bool isPlayable;
+    //public readonly bool isCastle;
     public readonly bool borderTile;
     public readonly bool greyed;
     
@@ -25,13 +26,14 @@ public class rampartTile
     public Vector3Int TilePos { get => tilePos;  }
     //public tileAlgorithmStatus cellStatus { get => cellStatus; set => cellStatus = value; }
 
-    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable)
+    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable, bool _isOccupied)
     {
         this.tilePos = convertVector2IntToVector3Int(_tilePos2d);
         parrentTilemapRef = _parrentTilemap;
         if (_parrentTilemap.GetTile(tilePos) != null) {
             isPlayable = _isPlayable;
-            isOccupied = !_isPlayable;
+            isOccupied = _isOccupied;
+            //isCastle = _isCastle;
             this.originalSprite = _parrentTilemap.GetSprite(tilePos);
             originalBaseTile = _parrentTilemap.GetTile(tilePos);
         }

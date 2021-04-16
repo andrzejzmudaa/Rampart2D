@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e476112ac7851348ad2ca748960c9d8, type: 3}
+  m_Name: CastleTiles
+  m_EditorClassIdentifier: 
+  playableTiles:
+  - {fileID: 11400000, guid: 5a9e4417ec359a0498a5b1b84627318c, type: 2}
+  - {fileID: 11400000, guid: 614edc3903687d640968927d3a80c9a6, type: 2}
+  - {fileID: 11400000, guid: 92b21d07fa5c7db4db346a298c4494d5, type: 2}
+  - {fileID: 11400000, guid: e51155a7f4bdaa646afbae0a131713a3, type: 2}
+  - {fileID: 11400000, guid: 4794f36f0bf1c244e8369f6e53fad3a1, type: 2}
+  - {fileID: 11400000, guid: 10bcd7d7139423a4da17c6c06bc3fed3, type: 2}
+  - {fileID: 11400000, guid: 633b524c790e1f74c93d970719c497d5, type: 2}
+  - {fileID: 11400000, guid: 279035e238f0b4449bd19e6d08e2e57f, type: 2}
+  - {fileID: 11400000, guid: 43d0e8f5756bfd84da9be7fb207c34e0, type: 2}
+  - {fileID: 11400000, guid: c57208ce543f0f84581bcb91035a7736, type: 2}
+  - {fileID: 11400000, guid: 2e127a97a8efddd4999b2ec4daba8490, type: 2}
+  - {fileID: 11400000, guid: 9a147e39e39e93a4088dc58840a162a6, type: 2}
+  - {fileID: 11400000, guid: eff3d340dd7baa34195bfbd6fd5757eb, type: 2}
+  - {fileID: 11400000, guid: 546238f0779a52549ab5e9b42c3c7b3b, type: 2}
+  - {fileID: 11400000, guid: 82e935ffdaf0bf54da6cceb31f5bd0f8, type: 2}
+  - {fileID: 11400000, guid: cee4d94b5b8b95048a61fa4cbe700990, type: 2}
+  - {fileID: 11400000, guid: 7394d4d1dfc94ad4e836e177affab85f, type: 2}
+  - {fileID: 11400000, guid: cbfeeeb62e1875247b94bc159898ffda, type: 2}
