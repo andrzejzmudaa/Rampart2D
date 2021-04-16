@@ -120,8 +120,8 @@ public class PlayerOneManager : MonoBehaviour
             for (int y = playerMap.cellBounds.min.y; y < playerMap.cellBounds.max.y; y++)
             {
                 Tile tempTile = (Tile)playerMap.GetTile(new Vector3Int(x, y, 0));
-                if (tempTile != null)
-                {
+                
+                
                     if (x < tempMapMinSizeX)
                         tempMapMinSizeX = x;
                     if (x > tempMapMaxSizeX)
@@ -132,6 +132,7 @@ public class PlayerOneManager : MonoBehaviour
                         tempMapMaxSizeY = y;
 
                     bool isPlayable = false;
+                    if (tempTile != null)
                     foreach (TileBase singleTileBase in playableTiles.playableTiles)
                     {
                         if (tempTile == singleTileBase)
@@ -153,7 +154,7 @@ public class PlayerOneManager : MonoBehaviour
 
                     Vector2Int tempVector2int = new Vector2Int(x, y);
                     playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapClone, isPlayable));
-                }
+                
             }
         }
         BoundsInt tempBound = new BoundsInt();
