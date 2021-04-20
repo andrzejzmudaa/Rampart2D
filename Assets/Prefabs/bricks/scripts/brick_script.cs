@@ -10,7 +10,6 @@ public class brick_script : MonoBehaviour
     public Sprite borderBrickSprite;
     public Sprite brickSprite;
     public brickTemplatesContainer availableBricks;
-    public Material outlineMaterial;
     private brickTemplate brickProperties;
     private brickPropertiesClass.angleType angle;
     private bool[,] occupied_matrix4x4;
@@ -22,7 +21,6 @@ public class brick_script : MonoBehaviour
     private Tile brickTile;
     private Tile borderTile;
     Tile emptyTile;
-    private Material outlineMaterialLocalInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -44,10 +42,7 @@ public class brick_script : MonoBehaviour
         borderTile = new Tile();
         brickTile.sprite = brickSprite;
         borderTile.sprite = borderBrickSprite;
-        outlineMaterialLocalInstance = localTilemapRenderer.material;
-        //outlineMaterialLocalInstance = Instantiate(outlineMaterial);
-        //localTilemapRenderer.material = outlineMaterialLocalInstance;
-        //brickTile.sprite.
+
 
 
         //printBool2dArray(brickProperties.getBoolean2dMatrix());
@@ -227,7 +222,10 @@ public class brick_script : MonoBehaviour
 
     public void setPlayerColor(Color _inputColor)
     {
-        outlineMaterialLocalInstance.color = _inputColor*6f;
+        //This line generates Unity UniverRenderPipeLine error
+        //In order to call GetTransformInfoExpectUpToDate, RendererUpdateManager.UpdateAll must be called first.
+        //UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr)
+        localTilemapRenderer.material.color = _inputColor*6f;
     }
 
 }

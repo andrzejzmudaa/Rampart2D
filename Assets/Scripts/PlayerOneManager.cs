@@ -6,7 +6,8 @@ using UnityEngine.Tilemaps;
 public class PlayerOneManager : MonoBehaviour
 {
     public Tilemap playerMap;
-    private Tilemap playerMapClone;
+    private Tilemap playerMapCloneForPuttingWall;
+    private Tilemap plyerMapCloneForCastleBackground;
     public Color playerColor;
     public TileData playableTiles;
     public TileData castleTiles;
@@ -17,7 +18,9 @@ public class PlayerOneManager : MonoBehaviour
     private GameObject brickref;
     private Dictionary<Vector2Int, rampartTile> playerTiles;
     private brick_script brickPrefabInstance;
-    
+    private TileBase lastPlayableTile;
+
+
 
 
     // Start is called before the first frame update
@@ -28,8 +31,14 @@ public class PlayerOneManager : MonoBehaviour
         brickPrefabInstance.InitializazeFunction();
         brickPrefabInstance.setPlayerColor(playerColor);
         playerMap.CompressBounds();
-        playerMapClone = Object.Instantiate(playerMap, new Vector3(playerMap.transform.position.x, playerMap.transform.position.y, playerMap.transform.position.z - 1), playerMap.transform.rotation, playerMap.transform);
-        playerMapClone.color = playerColor;
+        playerMapCloneForPuttingWall = Object.Instantiate(playerMap, new Vector3(playerMap.transform.position.x, playerMap.transform.position.y, playerMap.transform.position.z - 1), playerMap.transform.rotation, playerMap.transform);
+        playerMapCloneForPuttingWall.gameObject.name = "playerMapCloneForPuttingWall";
+        plyerMapCloneForCastleBackground = Object.Instantiate(playerMapCloneForPuttingWall, new Vector3(playerMap.transform.position.x, playerMap.transform.position.y, playerMap.transform.position.z + 2), playerMap.transform.rotation, playerMap.transform);
+        plyerMapCloneForCastleBackground.gameObject.name = "plyerMapCloneForCastleBackground";
+        playerMapCloneForPuttingWall.color = playerColor;
+        plyerMapCloneForCastleBackground.ClearAllTiles();
+        //plyerMapCloneForCastleBackground.RefreshAllTiles();
+
         playerTiles = new Dictionary<Vector2Int, rampartTile>();
         mapGridSizeX = playerMap.layoutGrid.cellSize.x;
         mapGridSizeY = playerMap.layoutGrid.cellSize.y;
@@ -45,7 +54,7 @@ public class PlayerOneManager : MonoBehaviour
         //playerMap.BoxFill(Vector3Int.zero, new Tile(), playerMap.cellBounds.min.x, playerMap.cellBounds.min.y, playerMap.cellBounds.max.x, playerMap.cellBounds.max.y);
 
 
-        playerMapClone.ClearAllTiles();
+        playerMapCloneForPuttingWall.ClearAllTiles();
         budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap , playerColor);
 
 
@@ -75,30 +84,30 @@ public class PlayerOneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            brickPrefabInstance.rotateBrick(playerMapClone, playerTiles);
+            brickPrefabInstance.rotateBrick(playerMapCloneForPuttingWall, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            brickPrefabInstance.moveBrickUp(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickUp(playerMapCloneForPuttingWall, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            brickPrefabInstance.moveBrickDown(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickDown(playerMapCloneForPuttingWall, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            brickPrefabInstance.moveBrickLeft(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickLeft(playerMapCloneForPuttingWall, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            brickPrefabInstance.moveBrickRight(playerMapClone, playerTiles);
+            brickPrefabInstance.moveBrickRight(playerMapCloneForPuttingWall, playerTiles);
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (brickPrefabInstance.setBricksOccupiedOnMap(playerMapClone, playerTiles))
+            if (brickPrefabInstance.setBricksOccupiedOnMap(playerMapCloneForPuttingWall, playerTiles))
             {
                 budzyn.processMap2D(playerTiles, mapBordersCounted , playerMap , playerColor);
-                playerMapClone.RefreshAllTiles();
+                playerMapCloneForPuttingWall.RefreshAllTiles();
                 brickPrefabInstance.setRandomBrickFromList();
                 
             }
@@ -132,32 +141,28 @@ public class PlayerOneManager : MonoBehaviour
                         tempMapMaxSizeY = y;
 
                 bool isPlayable = false;
-                bool isCastleTile = false;
                 bool isOccupied = false;
+                bool isCastle = false;
                 if (tempTile != null) 
                 { 
                     foreach (TileBase singleTileBase in playableTiles.playableTiles)
                     {
                         if (tempTile == singleTileBase)
                         {
-                        tempTile.flags = TileFlags.None;
-                        playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
-                        isPlayable = true;
-                        if ((Mathf.Abs(x) % 2) == (Mathf.Abs(y) % 2))
-                        {
-                            playerMap.SetColor(new Vector3Int(x, y, 0), new Color(1.0f, 1.0f, 1.0f, 0.8f));
-                        }
-                        else
-                        {
-                            playerMap.SetColor(new Vector3Int(x, y, 0), new Color(1.0f, 1.0f, 1.0f, 1.0f));
-                        }
+                            lastPlayableTile = singleTileBase;
+                            tempTile.flags = TileFlags.None;
+                            playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
+                            isPlayable = true;
+                            setBackgroundColorAsChess(x, y,playerMap);
 
                         }
                         foreach (TileBase singleCastleTileBase in castleTiles.playableTiles)
                         {
                             if (tempTile == singleCastleTileBase)
                             {
-                                isCastleTile = true;
+                                isCastle = true;
+                                plyerMapCloneForCastleBackground.SetTile(new Vector3Int(x,y,0), lastPlayableTile);
+                                setBackgroundColorAsChess(x, y, plyerMapCloneForCastleBackground);
 
                             }
 
@@ -166,7 +171,7 @@ public class PlayerOneManager : MonoBehaviour
                 }
 
                     Vector2Int tempVector2int = new Vector2Int(x, y);
-                    playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapClone, isPlayable ,  isOccupied));
+                    playerTiles.Add(tempVector2int, new rampartTile(tempVector2int, ref playerMapCloneForPuttingWall, isPlayable ,  isOccupied , isCastle));
                 
             }
         }
@@ -176,7 +181,20 @@ public class PlayerOneManager : MonoBehaviour
         tempBound.yMin = tempMapMinSizeY;
         tempBound.yMax = tempMapMaxSizeY;
         playerMap.RefreshAllTiles();
+        plyerMapCloneForCastleBackground.CompressBounds();
         return tempBound;
 
+    }
+
+    private void setBackgroundColorAsChess(int _x, int _y,Tilemap _playerMap)
+    {
+        if ((Mathf.Abs(_x) % 2) == (Mathf.Abs(_y) % 2))
+        {
+            _playerMap.SetColor(new Vector3Int(_x, _y, 0), new Color(1.0f, 1.0f, 1.0f, 0.8f));
+        }
+        else
+        {
+            _playerMap.SetColor(new Vector3Int(_x, _y, 0), new Color(1.0f, 1.0f, 1.0f, 1.0f));
+        }
     }
 }

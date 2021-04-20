@@ -54,7 +54,6 @@ MonoBehaviour:
   borderBrickSprite: {fileID: 21300000, guid: 21be3bfe33f8f184c9825c4ea37358e1, type: 3}
   brickSprite: {fileID: 21300000, guid: 9936d90e1dc53c5498f68869af7f1403, type: 3}
   availableBricks: {fileID: 11400000, guid: 4fc90e1cbd892ed42a288b587f59c3b7, type: 2}
-  outlineMaterial: {fileID: 2100000, guid: 2111c2b52540cbf47a543f17eec54e31, type: 2}
 --- !u!156049354 &2124276455881541189
 Grid:
   m_ObjectHideFlags: 0
@@ -152,7 +151,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2111c2b52540cbf47a543f17eec54e31, type: 2}
+  - {fileID: 2100000, guid: 570e2ebbbd04efc4e8a5b9d084367e0d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -177,7 +177,9 @@ public class budzyn
     public static void processMap2D(Dictionary<Vector2Int, rampartTile> _playerTiles, BoundsInt _mapBounds ,Tilemap _incomingPlayerMap ,Color _playerColor)
     {
         rampartTile tempRampartTile;
-   
+        Tilemap plyerMapCloneForCastleBackground = _incomingPlayerMap.transform.GetChild(1).gameObject.GetComponent<Tilemap>();
+
+
         for (int i = _mapBounds.xMin; i <= _mapBounds.xMax; i++)
         {
             for (int j = _mapBounds.yMin; j <= _mapBounds.yMax; j++)
@@ -300,10 +302,18 @@ public class budzyn
                     if ((Mathf.Abs(tempRampartTile.TilePos.x) % 2) == (Mathf.Abs(tempRampartTile.TilePos.y) % 2))
                     {
                         _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.1f));
+                        if (tempRampartTile.isCastle)
+                        {
+                            plyerMapCloneForCastleBackground.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.1f));
+                        }
                     }
                     else
                     {
                         _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.7f));
+                        if (tempRampartTile.isCastle)
+                        {
+                            plyerMapCloneForCastleBackground.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.7f));
+                        }
                     }
                 }
                
