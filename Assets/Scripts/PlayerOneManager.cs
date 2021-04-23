@@ -115,7 +115,20 @@ public class PlayerOneManager : MonoBehaviour
     }
 
 
-    
+    public void destroyWallBrick(Vector3Int _wallBrickPos)
+    {
+        rampartTile tempTile;
+        playerTiles.TryGetValue(new Vector2Int(_wallBrickPos.x, _wallBrickPos.y),out tempTile);
+        if (tempTile == null)
+            return;
+        if (tempTile.isOccupied)
+        {
+            tempTile.isOccupied = false;
+            playerMapCloneForPuttingWall.SetTile(_wallBrickPos, new Tile()) ;
+            budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap, playerColor);
+            
+        }
+    }
 
     
 
@@ -153,7 +166,7 @@ public class PlayerOneManager : MonoBehaviour
                             tempTile.flags = TileFlags.None;
                             playerMap.SetTileFlags(new Vector3Int(x, y, 0), TileFlags.None);
                             isPlayable = true;
-                            setBackgroundColorAsChess(x, y,playerMap);
+                            budzyn.setBackgroundColorAsChess(new Vector2Int(x, y), playerMap);
 
                         }
                         foreach (TileBase singleCastleTileBase in castleTiles.playableTiles)
@@ -162,7 +175,7 @@ public class PlayerOneManager : MonoBehaviour
                             {
                                 isCastle = true;
                                 plyerMapCloneForCastleBackground.SetTile(new Vector3Int(x,y,0), lastPlayableTile);
-                                setBackgroundColorAsChess(x, y, plyerMapCloneForCastleBackground);
+                                budzyn.setBackgroundColorAsChess(new Vector2Int(x,y), plyerMapCloneForCastleBackground);
 
                             }
 
@@ -186,15 +199,5 @@ public class PlayerOneManager : MonoBehaviour
 
     }
 
-    private void setBackgroundColorAsChess(int _x, int _y,Tilemap _playerMap)
-    {
-        if ((Mathf.Abs(_x) % 2) == (Mathf.Abs(_y) % 2))
-        {
-            _playerMap.SetColor(new Vector3Int(_x, _y, 0), new Color(1.0f, 1.0f, 1.0f, 0.8f));
-        }
-        else
-        {
-            _playerMap.SetColor(new Vector3Int(_x, _y, 0), new Color(1.0f, 1.0f, 1.0f, 1.0f));
-        }
-    }
+
 }

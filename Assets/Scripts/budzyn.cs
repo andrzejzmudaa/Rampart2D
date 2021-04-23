@@ -316,17 +316,28 @@ public class budzyn
                         }
                     }
                 }
-               
+                if (tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.NotInternal)
+                setBackgroundColorAsChess(new Vector2Int(i,j),_incomingPlayerMap);
+
+
+
             }
         }
         // and now all holes were filled
 
     }
 
-    private void setTile()
+
+    public static void setBackgroundColorAsChess(Vector2Int _vectorXY, Tilemap _playerMap)
     {
-
-
+        if ((Mathf.Abs(_vectorXY.x) % 2) == (Mathf.Abs(_vectorXY.y) % 2))
+        {
+            _playerMap.SetColor(new Vector3Int(_vectorXY.x, _vectorXY.y, 0), new Color(1.0f, 1.0f, 1.0f, 0.8f));
+        }
+        else
+        {
+            _playerMap.SetColor(new Vector3Int(_vectorXY.x, _vectorXY.y, 0), new Color(1.0f, 1.0f, 1.0f, 1.0f));
+        }
     }
 }
 
