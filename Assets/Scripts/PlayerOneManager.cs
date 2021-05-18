@@ -49,6 +49,7 @@ public class PlayerOneManager : MonoBehaviour
 
 
         brickPrefabInstance.setInitialPositionInMiddle(mapBordersCounted, playerMap);
+        brickPrefabInstance.setRandomBrickFromList(playerMapCloneForPuttingWall, playerTiles);
         //brickPrefabInstance.setPlayerColor(playerColor);
         //playerMap.EditorPreviewFloodFill(Vector3Int.zero, new Tile());
         //playerMap.BoxFill(Vector3Int.zero, new Tile(), playerMap.cellBounds.min.x, playerMap.cellBounds.min.y, playerMap.cellBounds.max.x, playerMap.cellBounds.max.y);
@@ -107,8 +108,8 @@ public class PlayerOneManager : MonoBehaviour
             if (brickPrefabInstance.setBricksOccupiedOnMap(playerMapCloneForPuttingWall, playerTiles))
             {
                 budzyn.processMap2D(playerTiles, mapBordersCounted , playerMap , playerColor);
-                playerMapCloneForPuttingWall.RefreshAllTiles();
-                brickPrefabInstance.setRandomBrickFromList();
+                //playerMapCloneForPuttingWall.RefreshAllTiles();
+                brickPrefabInstance.setRandomBrickFromList(playerMapCloneForPuttingWall, playerTiles);
                 
             }
         }

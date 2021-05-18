@@ -108,26 +108,45 @@ public class brick_script : MonoBehaviour
         }
     }
 
-    public void moveBrickUp(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles)
+    public bool moveBrickUp(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles , int multiplyArgument = 1)
     {
-        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.up), _playerMap, _playerTiles, angle))
-            thisObject.transform.position = new Vector3(thisObject.transform.position.x, thisObject.transform.position.y + 1, thisObject.transform.position.z);
-        
+        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.up * multiplyArgument), _playerMap, _playerTiles, angle))
+        {
+            thisObject.transform.position = new Vector3(thisObject.transform.position.x, thisObject.transform.position.y + multiplyArgument, thisObject.transform.position.z);
+            return true;
+        }
+        else
+            return false;
     }
-    public void moveBrickDown(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles)
+    public bool moveBrickDown(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles, int multiplyArgument = 1)
     {
-        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.down), _playerMap, _playerTiles, angle))
-            thisObject.transform.position = new Vector3(thisObject.transform.position.x, thisObject.transform.position.y - 1, thisObject.transform.position.z);
+        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.down * multiplyArgument), _playerMap, _playerTiles, angle))
+        {
+            thisObject.transform.position = new Vector3(thisObject.transform.position.x, thisObject.transform.position.y - multiplyArgument, thisObject.transform.position.z);
+            return true;
+        }
+        else
+            return false;
     }
-    public void moveBrickLeft(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles)
+    public bool moveBrickLeft(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles, int multiplyArgument = 1)
     {
-        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.left), _playerMap, _playerTiles, angle))
-            thisObject.transform.position = new Vector3(thisObject.transform.position.x - 1, thisObject.transform.position.y, thisObject.transform.position.z);
+        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.left * multiplyArgument), _playerMap, _playerTiles, angle))
+        {
+            thisObject.transform.position = new Vector3(thisObject.transform.position.x - multiplyArgument, thisObject.transform.position.y, thisObject.transform.position.z);
+            return true;
+        }
+        else
+            return false;
     }
-    public void moveBrickRight(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles)
+    public bool moveBrickRight(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles, int multiplyArgument = 1)
     {
-        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.right), _playerMap, _playerTiles, angle))
-            thisObject.transform.position = new Vector3(thisObject.transform.position.x + 1, thisObject.transform.position.y, thisObject.transform.position.z);
+        if (checkIfMovementPossible((retriveBrickPosition3dVector() + Vector3.right * multiplyArgument), _playerMap, _playerTiles, angle))
+        {
+            thisObject.transform.position = new Vector3(thisObject.transform.position.x + multiplyArgument, thisObject.transform.position.y, thisObject.transform.position.z);
+            return true;
+        }
+        else
+            return false;
     }
 
     public bool setBricksOccupiedOnMap(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles)
@@ -135,6 +154,33 @@ public class brick_script : MonoBehaviour
         return checkIfPossibleAndSetBrick(retriveBrickPosition3dVector(), _playerMap, _playerTiles, angle);
     }
 
+    public void setRandomBrickFromList(Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles)
+    {
+        int brickRandomNumber = UnityEngine.Random.Range(0, availableBricks.brickTemplates.Length);
+        brickProperties = (brickTemplate)availableBricks.brickTemplates.GetValue(brickRandomNumber);
+        angle = 0;
+        setTilesAccordingTo2dMatrix(brickProperties.getBoolean2dMatrix(angle));
+        bool movementPossible = false;
+        int multiplyFactor = 1;
+        do
+        {
+
+            if (checkIfMovementPossible((retriveBrickPosition3dVector()), _playerMap, _playerTiles, angle))
+                movementPossible = true;
+            else if (moveBrickUp(_playerMap, _playerTiles, multiplyFactor))
+                movementPossible = true;
+            else if (moveBrickDown(_playerMap, _playerTiles, multiplyFactor))
+                movementPossible = true;
+            else if (moveBrickLeft(_playerMap, _playerTiles, multiplyFactor))
+                movementPossible = true;
+            else if (moveBrickRight(_playerMap, _playerTiles, multiplyFactor))
+                movementPossible = true;
+            else
+                multiplyFactor++;
+
+        }
+        while (!movementPossible);
+    }
     public void setRandomBrickFromList()
     {
         int brickRandomNumber = UnityEngine.Random.Range(0, availableBricks.brickTemplates.Length);
@@ -144,7 +190,7 @@ public class brick_script : MonoBehaviour
     }
 
 
-    public bool checkIfMovementPossible(Vector3 _position,Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles, brickPropertiesClass.angleType _angle)
+        public bool checkIfMovementPossible(Vector3 _position,Tilemap _playerMap, Dictionary<Vector2Int, rampartTile> _playerTiles, brickPropertiesClass.angleType _angle)
     {
         bool[,] brick2dArray = retriveBrick2dArray(_angle);
         Vector3 brickCenterWorldPosition = _position; 

@@ -174,10 +174,11 @@ public class budzyn
 
 
 
-    public static void processMap2D(Dictionary<Vector2Int, rampartTile> _playerTiles, BoundsInt _mapBounds ,Tilemap _incomingPlayerMap ,Color _playerColor)
+    public static int processMap2D(Dictionary<Vector2Int, rampartTile> _playerTiles, BoundsInt _mapBounds ,Tilemap _incomingPlayerMap ,Color _playerColor)
     {
         rampartTile tempRampartTile;
         Tilemap plyerMapCloneForCastleBackground = _incomingPlayerMap.transform.GetChild(1).gameObject.GetComponent<Tilemap>();
+        int castleTilesCounted = 0;
 
 
         for (int i = _mapBounds.xMin; i <= _mapBounds.xMax; i++)
@@ -301,29 +302,39 @@ public class budzyn
                     //_incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b));
                     if ((Mathf.Abs(tempRampartTile.TilePos.x) % 2) == (Mathf.Abs(tempRampartTile.TilePos.y) % 2))
                     {
-                        _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.1f));
-                        if (tempRampartTile.isCastle)
+                        if (!tempRampartTile.isCastle)
+                            _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.1f));
+                        else
                         {
                             plyerMapCloneForCastleBackground.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.1f));
+                            castleTilesCounted++;
                         }
+
+
                     }
                     else
                     {
-                        _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.7f));
-                        if (tempRampartTile.isCastle)
+                        if (!tempRampartTile.isCastle)
+                            _incomingPlayerMap.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.7f));
+                        else
                         {
                             plyerMapCloneForCastleBackground.SetColor(tempRampartTile.TilePos, new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.7f));
+                            castleTilesCounted++;
                         }
                     }
                 }
                 if (tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.NotInternal)
-                setBackgroundColorAsChess(new Vector2Int(i,j),_incomingPlayerMap);
+                    if (!tempRampartTile.isCastle)
+                        setBackgroundColorAsChess(new Vector2Int(i, j), _incomingPlayerMap);
+                    else
+                        setBackgroundColorAsChess(new Vector2Int(i, j), plyerMapCloneForCastleBackground);
 
 
 
             }
         }
-        // and now all holes were filled
+        // and now all holes were filleds
+        return castleTilesCounted;
 
     }
 
