@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerOneManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
+    public UnityEngine.UI.Slider slider;
+
+    public KeyCode keyUP;
+    public KeyCode keyDOWN;
+    public KeyCode keyLEFT;
+    public KeyCode keyRIGHT;
+    public KeyCode keyPUT;
+    public KeyCode keyROTATE;
     public Tilemap playerMap;
     private Tilemap playerMapCloneForPuttingWall;
     private Tilemap plyerMapCloneForCastleBackground;
@@ -12,13 +20,16 @@ public class PlayerOneManager : MonoBehaviour
     public TileData playableTiles;
     public TileData castleTiles;
     public brick_script brickPrefab;
+    public cannon_transparent_prefab_script cannon_transparent_prefab;
     private float mapGridSizeX;
     private float mapGridSizeY;
     private BoundsInt mapBordersCounted;
     private GameObject brickref;
     private Dictionary<Vector2Int, rampartTile> playerTiles;
     private brick_script brickPrefabInstance;
+    private cannon_transparent_prefab_script cannon_transparent_prefab_instance;
     private TileBase lastPlayableTile;
+    
 
 
 
@@ -59,8 +70,8 @@ public class PlayerOneManager : MonoBehaviour
         budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap , playerColor);
 
 
-
-
+        cannon_transparent_prefab_instance = GameObject.Instantiate<cannon_transparent_prefab_script>(cannon_transparent_prefab);
+        
 
 
         //Debug.Log("playerMap.cellBounds.min.x " + playerMap.cellBounds.min.x);
@@ -76,34 +87,67 @@ public class PlayerOneManager : MonoBehaviour
             // Update is called once per frame
             void Update()
     {
-
-        InputControl();
+        cannon_transparent_prefab_instance.gameObject.SetActive(slider.value > 0);
+        //InputBrickControl();
 
     }
 
-    private void InputControl()
+    private void InputCannonPutControl()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(keyROTATE))
+        {
+            
+        }
+        if (Input.GetKeyDown(keyUP))
+        {
+            
+        }
+        if (Input.GetKeyDown(keyDOWN))
+        {
+            
+        }
+        if (Input.GetKeyDown(keyLEFT))
+        {
+            
+        }
+        if (Input.GetKeyDown(keyRIGHT))
+        {
+            
+        }
+        if (Input.GetKeyDown(keyPUT))
+        {
+            
+        }
+
+
+
+
+
+    }
+
+    private void InputBrickControl()
+    {
+        if (Input.GetKeyDown(keyROTATE))
         {
             brickPrefabInstance.rotateBrick(playerMapCloneForPuttingWall, playerTiles);
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(keyUP))
         {
             brickPrefabInstance.moveBrickUp(playerMapCloneForPuttingWall, playerTiles);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(keyDOWN))
         {
             brickPrefabInstance.moveBrickDown(playerMapCloneForPuttingWall, playerTiles);
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(keyLEFT))
         {
             brickPrefabInstance.moveBrickLeft(playerMapCloneForPuttingWall, playerTiles);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(keyRIGHT))
         {
             brickPrefabInstance.moveBrickRight(playerMapCloneForPuttingWall, playerTiles);
         }
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(keyPUT))
         {
             if (brickPrefabInstance.setBricksOccupiedOnMap(playerMapCloneForPuttingWall, playerTiles))
             {

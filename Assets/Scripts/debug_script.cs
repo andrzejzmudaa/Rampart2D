@@ -7,7 +7,7 @@ public class debug_script : MonoBehaviour
     private UnityEngine.Camera cam;
     public Tilemap inputTileMap;
     private Tilemap wallTileMap;
-    public PlayerOneManager playerClass;
+    public PlayerManager playerClass;
     void Start()
     {
         cam = UnityEngine.Camera.main;
