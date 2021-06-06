@@ -21,28 +21,30 @@ public class rampartTile
 
     public Sprite OriginalSprite { get => originalSprite; }
     public TileBase OriginalBaseTile { get => originalBaseTile; }
-    public bool isOccupied { get; set; }
+    public bool isOccupiedByWall { get; set; }
+    public bool isOccupiedByCannonField { get; set; }
     //public bool IsOccupied;
     public Vector3Int TilePos { get => tilePos;  }
     //public tileAlgorithmStatus cellStatus { get => cellStatus; set => cellStatus = value; }
 
-    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable, bool _isOccupied, bool _isCastle)
+    public rampartTile(Vector2Int _tilePos2d,ref Tilemap _parrentTilemap, bool _isPlayable, bool _isCastle)
     {
         this.tilePos = convertVector2IntToVector3Int(_tilePos2d);
         parrentTilemapRef = _parrentTilemap;
         if (_parrentTilemap.GetTile(tilePos) != null) {
             isPlayable = _isPlayable;
-            isOccupied = _isOccupied;
+            isOccupiedByWall = false;
+            isOccupiedByCannonField = false;
             isCastle = _isCastle;
             this.originalSprite = _parrentTilemap.GetSprite(tilePos);
             originalBaseTile = _parrentTilemap.GetTile(tilePos);
         }
     }
 
-    public void setNewTileBase(TileBase _incomingTileBase)
+    public void setNewTileBaseForWall(TileBase _incomingTileBase)
     {
         modifiedTileBase = _incomingTileBase;
-        isOccupied = true;
+        isOccupiedByWall = true;
         parrentTilemapRef.SetTile(tilePos, modifiedTileBase);
     }
 

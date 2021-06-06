@@ -21,7 +21,6 @@ public class brick_script : MonoBehaviour
     private Tile brickTile;
     private Tile borderTile;
     Tile emptyTile;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +31,7 @@ public class brick_script : MonoBehaviour
 
     public void InitializazeFunction()
     {
+        
         thisObject = this.gameObject;
         angle = brickPropertiesClass.angleType.A0deg;
         localGrid4x4 = this.gameObject.GetComponent<Grid>();
@@ -228,7 +228,7 @@ public class brick_script : MonoBehaviour
                 if (brick2dArray[i, j])
                     if (_playerTiles.TryGetValue(rampartTile.convertVector3IntToVector2Int(new Vector3Int((cellPosition.x + j), cellPosition.y - i, cellPosition.z)), out rampartTile _outTile))
                     {
-                        if (_outTile.isPlayable && !_outTile.isOccupied)
+                        if (_outTile.isPlayable && !_outTile.isOccupiedByWall && !_outTile.isOccupiedByCannonField)
                             tempRampartTileListToModify.Add(_outTile);
                         else
                             isSetBrickPossible = false;
@@ -241,7 +241,7 @@ public class brick_script : MonoBehaviour
         {
             foreach(rampartTile singleTile in tempRampartTileListToModify)
             {
-                singleTile.setNewTileBase(brickTile);
+                singleTile.setNewTileBaseForWall(brickTile);
             }
 
         }
@@ -263,7 +263,7 @@ public class brick_script : MonoBehaviour
 
     public void setInitialPositionInMiddle(BoundsInt _inputBounds , Tilemap _playerMap)
     {
-        thisObject.transform.position = new Vector3((_inputBounds.xMax - (_inputBounds.xMax - _inputBounds.xMin) / 2) + _playerMap.transform.position.x, (_inputBounds.yMax - (_inputBounds.yMax - _inputBounds.yMin) / 2) + _playerMap.transform.position.y, thisObject.transform.position.z);       
+        thisObject.transform.position = new Vector3(Mathf.RoundToInt((_inputBounds.xMax - (_inputBounds.xMax - _inputBounds.xMin) / 2) + _playerMap.transform.position.x), Mathf.RoundToInt((_inputBounds.yMax - (_inputBounds.yMax - _inputBounds.yMin) / 2) + _playerMap.transform.position.y), thisObject.transform.position.z);       
     }
 
     public void setPlayerColor(Color _inputColor)

@@ -24,7 +24,7 @@ public static class mapFunctions_libs
         Vector3Int tempVector3Int = new Vector3Int(0, 0, 1);
         foreach (rampartTile singleRampartTile in _input_dictionary.Values)
         {
-            if( singleRampartTile.isPlayable && !singleRampartTile.isOccupied && singleRampartTile.borderTile)
+            if( singleRampartTile.isPlayable && !singleRampartTile.isOccupiedByWall && singleRampartTile.borderTile)
             {
                 tempVector3Int = singleRampartTile.TilePos;
                 break;

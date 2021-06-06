@@ -186,13 +186,13 @@ public class budzyn
             for (int j = _mapBounds.yMin; j <= _mapBounds.yMax; j++)
             {
                 _playerTiles.TryGetValue(new Vector2Int(i, j), out tempRampartTile);
-                if (tempRampartTile.isOccupied && tempRampartTile.isPlayable)
+                if (tempRampartTile.isOccupiedByWall && tempRampartTile.isPlayable)
                     tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.Wall;
                 // if on edge
                 if ((i == _mapBounds.xMin) || (i == _mapBounds.xMax) || (j == _mapBounds.yMin) || (j == _mapBounds.yMax))
                 {
                  
-                    if (!tempRampartTile.isOccupied)
+                    if (!tempRampartTile.isOccupiedByWall)
                     {
                         tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.NotInternal;
                     }
@@ -201,7 +201,7 @@ public class budzyn
                         tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.Wall;
                     }
                 }
-                else if (!tempRampartTile.isOccupied)
+                else if (!tempRampartTile.isOccupiedByWall)
                 {
                     tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.NotDefinedYet;
                 }
@@ -268,7 +268,7 @@ public class budzyn
                                 //If already status is known,skip all calculations and continue with next
                                 if (tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.NotInternal || tempRampartTile.cellStatus == rampartTile.tileAlgorithmStatus.Wall)
                                     continue;
-                                if (tempRampartTile.isOccupied && tempRampartTile.isPlayable)
+                                if (tempRampartTile.isOccupiedByWall && tempRampartTile.isPlayable)
                                 {
                                     tempRampartTile.cellStatus = rampartTile.tileAlgorithmStatus.Wall;
 
