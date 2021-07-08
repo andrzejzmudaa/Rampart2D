@@ -1,49 +1,37 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class cannonBallScript : MonoBehaviour
 {
-	[Tooltip("Position we want to hit")]
-	public Vector3 targetPos;
-
-	[Tooltip("Horizontal speed, in units/sec")]
-	public float speed = 10;
-
-	[Tooltip("How high the arc should be, in units")]
-	public float arcHeight = 1;
-
-	[Tooltip("Horizontal speed, in units/sec")]
-	public float minSpeed = 10f;
-
+	Vector3 targetPos;
+	float speed;
 	bool allowMomvement;
 	Vector3 startPos;
-	Vector3 nextPos;
-	float shootAngle;
-	float tempspeed;
-	float x0;
-	float x1;
-	float dist;
+	float maxTime;
+	float t;
+	float frame;
+	cannon_prefab_script parentCannon;
 	void Start()
 	{
 		// Cache our start position, which is really the only thing we need
 		// (in addition to our current position, and the target).
-		startPos = transform.position;
-		tempspeed = Mathf.Abs(Mathf.Sin(shootAngle * Mathf.Deg2Rad) * speed);
-		x0 = startPos.x;
-		x1 = targetPos.x;
-		dist = x1 - x0;
+		//parentCannon = (cannon_prefab_script)
+		this.gameObject.transform.parent.GetComponent<cannon_prefab_script>().shootedBallStillExist = true;
+		//parentCannon.shootedBallStillExist = true;
+
+
+
 
 	}
 	void Update()
 	{
-		if (Mathf.Abs(dist) > 0.5f)
-			arcMovement();
-		else
-			straightMovement();
+		straightMovement();
 	}
 	void Arrived()
 	{
+		this.gameObject.transform.parent.GetComponent<cannon_prefab_script>().shootedBallStillExist = false;
 		Destroy(this.gameObject);
 	}
 
@@ -58,45 +46,67 @@ public class cannonBallScript : MonoBehaviour
 		return Quaternion.Euler(0, 0, Mathf.Atan2(forward.y, forward.x) * Mathf.Rad2Deg);
 	}
 
-	public void setTargetPos(Vector3 _targetPos, float _shootAngle)
+	public void setTargetPos(Vector3 _targetPos)
 	{
 		targetPos = _targetPos;
+		startPos = transform.position;
+		speed = 10f;
+		maxTime = calculateTime(targetPos, startPos);
 		allowMomvement = true;
-		shootAngle = _shootAngle;
 	}
 
 	bool comparePosVector(Vector3 _vector1, Vector3 _vector2)
 	{
-		return Vector2.SqrMagnitude(new Vector2(_vector1.x, _vector1.y) - new Vector2(_vector2.x, _vector2.y)) < 0.0001;
+		return Vector2.SqrMagnitude(new Vector2(_vector1.x, _vector1.y) - new Vector2(_vector2.x, _vector2.y)) < 0.01;
 
 	}
-	void arcMovement()
+	float calculateTime(Vector3 _vector1, Vector3 _vector2)
+    {
+		float distance = Vector2.SqrMagnitude(new Vector2(_vector1.x, _vector1.y) - new Vector2(_vector2.x, _vector2.y));
+		float time = (Mathf.Sqrt(distance) / speed);
+        if (time < 0.55f)
+        {
+            time = 0.6f;
+        }
+        return time;
+		
+    }
+	
+
+	void straightMovement()
 	{
 		if (!allowMomvement)
 			return;
 		// Compute the next position, with arc added in
-
-		float nextX = Mathf.MoveTowards(transform.position.x, x1, tempspeed * Time.deltaTime);
-		float baseY = Mathf.Lerp(startPos.y, targetPos.y, (nextX - x0) / dist);
-		float arc = arcHeight * (nextX - x0) * (nextX - x1) / (-0.25f * dist * dist);
-		nextPos = new Vector3(nextX, baseY + arc, transform.position.z);
-
-		// Rotate to face the next position, and then move there
-		transform.rotation = LookAt2D(nextPos - transform.position);
-		transform.position = nextPos;
-
-		// Do something when we reach the target
-		if (comparePosVector(transform.position, targetPos))
+		float height = 8f;
+		t += Time.deltaTime ;
+		frame++;
+		transform.position = MathParabola.Parabola(startPos, targetPos, height, t / maxTime);
+		if (comparePosVector(transform.position, targetPos) && t >= 0.5 || t> maxTime)
 			Arrived();
-		Debug.Log("Arc movement " + dist);
 	}
 
+	public class MathParabola
+{
 
+    public static Vector3 Parabola(Vector3 start, Vector3 end, float height, float t)
+    {
+        Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
 
-	void straightMovement()
-	{
-		Destroy(this.gameObject);
+        var mid = Vector3.Lerp(start, end, t);
 
-	}
+        return new Vector3(mid.x, f(t) + Mathf.Lerp(start.y, end.y, t), mid.z);
+    }
+
+    public static Vector2 Parabola(Vector2 start, Vector2 end, float height, float t)
+    {
+        Func<float, float> f = x => -4 * height * x * x + 4 * height * x;
+
+        var mid = Vector2.Lerp(start, end, t);
+
+        return new Vector2(mid.x, f(t) + Mathf.Lerp(start.y, end.y, t));
+    }
+
+}
 }
 

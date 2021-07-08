@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class aimScript : MonoBehaviour
 {
-    float movementFactor = 0.1f;
+    float movementFactor = 0.05f;
     float vertExtent;
     float horzExtent;
     private UnityEngine.Camera cam;
