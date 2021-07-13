@@ -11,14 +11,14 @@ public class cannonBallScript : MonoBehaviour
 	Vector3 startPos;
 	float maxTime;
 	float t;
-	float frame;
-	cannon_prefab_script parentCannon;
+	Game_Phase_Controller_Script parentControllerScript;
 	void Start()
 	{
 		// Cache our start position, which is really the only thing we need
 		// (in addition to our current position, and the target).
 		//parentCannon = (cannon_prefab_script)
 		this.gameObject.transform.parent.GetComponent<cannon_prefab_script>().shootedBallStillExist = true;
+		parentControllerScript = this.gameObject.transform.parent.parent.parent.GetComponent<Game_Phase_Controller_Script>();
 		//parentCannon.shootedBallStillExist = true;
 
 
@@ -33,6 +33,7 @@ public class cannonBallScript : MonoBehaviour
 	{
 		this.gameObject.transform.parent.GetComponent<cannon_prefab_script>().shootedBallStillExist = false;
 		Destroy(this.gameObject);
+		parentControllerScript.hitPlayerMapField(targetPos);
 	}
 
 	/// 
@@ -80,7 +81,6 @@ public class cannonBallScript : MonoBehaviour
 		// Compute the next position, with arc added in
 		float height = 8f;
 		t += Time.deltaTime ;
-		frame++;
 		transform.position = MathParabola.Parabola(startPos, targetPos, height, t / maxTime);
 		if (comparePosVector(transform.position, targetPos) && t >= 0.5 || t> maxTime)
 			Arrived();

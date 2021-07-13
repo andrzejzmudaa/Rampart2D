@@ -22,16 +22,13 @@ public class PlayerManager : MonoBehaviour
     public cannon_transparent_prefab_script cannon_transparent_prefab;
     public cannon_prefab_script cannon_prefab;
     public aimScript aim_Prefab;
-    private float mapGridSizeX;
-    private float mapGridSizeY;
     private BoundsInt mapBordersCounted;
-    private GameObject brickref;
     private Dictionary<Vector2Int, rampartTile> playerTiles;
     private brick_script brickPrefabInstance;
     private aimScript aim_Prefab_Instance;
-
+    private int playerCannonsToPut;
     private TileBase lastPlayableTile;
-
+    private bool cannonsToPutCountedInFirstCycleOfPutCannonsPhase;
     private cannon_transparent_prefab_script cannonTransparentPlayerInstance;
     private List<cannon_prefab_script> cannonsList;
 
@@ -54,14 +51,9 @@ public class PlayerManager : MonoBehaviour
         playerMapCloneForPuttingWall.color = playerColor;
         plyerMapCloneForCastleBackground.ClearAllTiles();
         //plyerMapCloneForCastleBackground.RefreshAllTiles();
-        
 
 
         playerTiles = new Dictionary<Vector2Int, rampartTile>();
-        mapGridSizeX = playerMap.layoutGrid.cellSize.x;
-        mapGridSizeY = playerMap.layoutGrid.cellSize.y;
-
-        TileBase[] allTiles = playerMap.GetTilesBlock(playerMap.cellBounds);
 
         mapBordersCounted = initializePlayerTilesDictionary();
 
@@ -72,12 +64,12 @@ public class PlayerManager : MonoBehaviour
         //playerMap.EditorPreviewFloodFill(Vector3Int.zero, new Tile());
         //playerMap.BoxFill(Vector3Int.zero, new Tile(), playerMap.cellBounds.min.x, playerMap.cellBounds.min.y, playerMap.cellBounds.max.x, playerMap.cellBounds.max.y);
 
-
         playerMapCloneForPuttingWall.ClearAllTiles();
-        budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap , playerColor);
+        playerCannonsToPut = budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap , playerColor);
 
 
         cannonTransparentPlayerInstance = GameObject.Instantiate<cannon_transparent_prefab_script>(cannon_transparent_prefab);
+        cannonTransparentPlayerInstance.executeAssigingInternalTextReference();
         cannonTransparentPlayerInstance.setCannonMaterialColor(playerColor);
         cannonTransparentPlayerInstance.setInitialPositionInMiddle(playerMap);
 
@@ -118,8 +110,16 @@ public class PlayerManager : MonoBehaviour
                 brickPrefabInstance.gameObject.SetActive(true);
                 aim_Prefab_Instance.gameObject.SetActive(false);
                 InputBrickControl();
+                if (cannonsToPutCountedInFirstCycleOfPutCannonsPhase)
+                    cannonsToPutCountedInFirstCycleOfPutCannonsPhase = false;
                 break;
             case Game_Phase_Controller_Script.phase_Enum.putCannons:
+                if (!cannonsToPutCountedInFirstCycleOfPutCannonsPhase)
+                {
+                    playerCannonsToPut += playerCannonsToPut = budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap, playerColor);
+                    cannonsToPutCountedInFirstCycleOfPutCannonsPhase = true;
+                }
+                cannonTransparentPlayerInstance.updatecannonAmmountToPutText(playerCannonsToPut);
                 cannonTransparentPlayerInstance.gameObject.SetActive(true);
                 brickPrefabInstance.gameObject.SetActive(false);
                 aim_Prefab_Instance.gameObject.SetActive(false);
@@ -154,7 +154,11 @@ public class PlayerManager : MonoBehaviour
         }
         if (Input.GetKeyDown(keyPUT))
         {
-            cannonTransparentPlayerInstance.checkIfPutCannonOnPlacetPossibleAndSet(playerMapCloneForPuttingWall, playerTiles , this);
+            if (playerCannonsToPut > 0)
+            {
+                cannonTransparentPlayerInstance.checkIfPutCannonOnPlacetPossibleAndSet(playerMapCloneForPuttingWall, playerTiles, this);
+                playerCannonsToPut--;
+            }
         }
 
 
@@ -243,24 +247,37 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    public void destroyWallBrick(Vector3Int _wallBrickPos)
+    public void verifyPlayerFieldHit(Vector3Int _targetPosInt)
     {
+        Vector3Int wallBrickPos = playerMap.WorldToCell(_targetPosInt);
         rampartTile tempTile;
-        playerTiles.TryGetValue(new Vector2Int(_wallBrickPos.x, _wallBrickPos.y),out tempTile);
+        //Debug.Log("MapPosition :" + wallBrickPos);
+        playerTiles.TryGetValue(new Vector2Int(wallBrickPos.x, wallBrickPos.y),out tempTile);
+        //Debug.Log("PLayer Tile :" + tempTile);
         if (tempTile == null)
+        {
+            //Debug.Log("Null found :" + wallBrickPos);
             return;
+        }
         if (tempTile.isOccupiedByWall)
         {
             tempTile.isOccupiedByWall = false;
-            playerMapCloneForPuttingWall.SetTile(_wallBrickPos, new Tile()) ;
+            playerMapCloneForPuttingWall.SetTile(wallBrickPos, new Tile()) ;
             budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap, playerColor);
-            
+        }
+        if (tempTile.isOccupiedByCannonField)
+        {
+            //playerTiles.Values.
+            //tempTile.isOccupiedByWall = false;
+            Debug.Log("Cannon name: " + tempTile.parentCannon.transform.localPosition);
         }
     }
 
-    public void instantiateCannonPrefab(Vector2Int _cannonPlace)
+    public cannon_prefab_script instantiateCannonPrefab(Vector2Int _cannonPlace)
     {
-        cannonsList.Add(Object.Instantiate<cannon_prefab_script>(cannon_prefab, new Vector3(_cannonPlace.x, _cannonPlace.y, this.transform.position.z), this.transform.rotation, this.transform));
+        cannon_prefab_script tempCannonRef = Object.Instantiate<cannon_prefab_script>(cannon_prefab, new Vector3(_cannonPlace.x, _cannonPlace.y, this.transform.position.z), this.transform.rotation, this.transform);
+        cannonsList.Add(tempCannonRef);
+        return tempCannonRef;
     }
 
     private BoundsInt initializePlayerTilesDictionary()

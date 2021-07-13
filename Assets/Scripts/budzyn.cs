@@ -334,7 +334,7 @@ public class budzyn
             }
         }
         // and now all holes were filleds
-        return castleTilesCounted;
+        return castleTilesCounted/3;
 
     }
 

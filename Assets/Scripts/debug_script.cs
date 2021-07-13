@@ -22,7 +22,7 @@ public class debug_script : MonoBehaviour
             Vector3 pos = cam.ScreenToWorldPoint(Input.mousePosition);
             
             Debug.Log("TIle: " + wallTileMap.GetTile(wallTileMap.WorldToCell(pos)));
-            playerClass.destroyWallBrick(wallTileMap.WorldToCell(pos));
+            playerClass.verifyPlayerFieldHit(wallTileMap.WorldToCell(pos));
 
         }
     }

@@ -11,7 +11,8 @@ public class rampartTile
     public readonly bool isCastle;
     public readonly bool borderTile;
     public readonly bool greyed;
-    
+    public cannon_prefab_script parentCannon;
+
     TileBase modifiedTileBase;
     Vector3Int tilePos;
 

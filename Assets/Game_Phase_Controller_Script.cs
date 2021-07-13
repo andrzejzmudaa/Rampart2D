@@ -8,10 +8,12 @@ public class Game_Phase_Controller_Script : MonoBehaviour
     private phase_Enum GameState;
     public UnityEngine.UI.Slider slider;
     public UnityEngine.UI.Text displayText;
+    public PlayerManager[] listOfPlayers;
     // Start is called before the first frame update
     void Start()
     {
         GameState = phase_Enum.GameNotStarted;
+        listOfPlayers = this.gameObject.transform.GetComponentsInChildren<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -45,5 +47,17 @@ public class Game_Phase_Controller_Script : MonoBehaviour
         return GameState;
     }
 
+    public void hitPlayerMapField(Vector3 _targerPos)
+    {
+        if (listOfPlayers == null)
+            return;
+        foreach(PlayerManager player in listOfPlayers)
+        {
+            Vector3Int targetPosInt = Vector3Int.FloorToInt(_targerPos);
+            //Debug.Log("Vector3 original: " + _targerPos + " Vector3Int: " + targetPosInt);
+            player.verifyPlayerFieldHit(targetPosInt);
+        }
+
+    }
 }
 

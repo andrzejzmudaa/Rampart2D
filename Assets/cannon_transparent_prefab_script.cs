@@ -2,19 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class cannon_transparent_prefab_script : MonoBehaviour
 {
+    Text cannonAmmountToPutText;
     // Start is called before the first frame update
     void Start()
     {
-        //thisObject
+        cannonAmmountToPutText = this.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void executeAssigingInternalTextReference()
+    {
+        cannonAmmountToPutText = this.GetComponentInChildren<Canvas>().GetComponentInChildren<Text>();
+    }
+
+    public void updatecannonAmmountToPutText(int _numberToUpdate)
+    {
+        cannonAmmountToPutText.text = _numberToUpdate.ToString();
     }
 
     public void setInitialPositionInMiddle(Tilemap _playerMap)
@@ -101,10 +114,11 @@ public class cannon_transparent_prefab_script : MonoBehaviour
 
         if (isPutCannonOnPlacePossible)
         {
-            _callingPlayerManager.instantiateCannonPrefab(cannonPlace);
+            cannon_prefab_script tempCannonRef = _callingPlayerManager.instantiateCannonPrefab(cannonPlace);
             foreach (rampartTile singleTile in tempRampartTileListToModify)
             {
                 singleTile.isOccupiedByCannonField = true;
+                singleTile.parentCannon = tempCannonRef;
             }
         }
         
