@@ -94,7 +94,8 @@ public class cannon_prefab_script : MonoBehaviour
     {
         if (!shootedBallStillExist)
         {
-            cannonBallSpawned = Object.Instantiate<cannonBallScript>(cannonBall, new Vector3(this.transform.position.x + xBallStartMove, this.transform.position.y + yBallStartMove, -2), this.transform.rotation, this.gameObject.transform);
+            cannonBallSpawned = Object.Instantiate<cannonBallScript>(cannonBall, new Vector3(this.transform.position.x + xBallStartMove, this.transform.position.y + yBallStartMove, -2), this.transform.rotation, this.gameObject.transform.parent);
+            cannonBallSpawned.setTargetParentCannonRef(this);
             cannonBallSpawned.setTargetPos(_targetPos);
         }
 

@@ -9,6 +9,7 @@ public class cannonBallScript : MonoBehaviour
 	float speed;
 	bool allowMomvement;
 	Vector3 startPos;
+	cannon_prefab_script parentCannonRef;
 	float maxTime;
 	float t;
 	Game_Phase_Controller_Script parentControllerScript;
@@ -17,8 +18,8 @@ public class cannonBallScript : MonoBehaviour
 		// Cache our start position, which is really the only thing we need
 		// (in addition to our current position, and the target).
 		//parentCannon = (cannon_prefab_script)
-		this.gameObject.transform.parent.GetComponent<cannon_prefab_script>().shootedBallStillExist = true;
-		parentControllerScript = this.gameObject.transform.parent.parent.parent.GetComponent<Game_Phase_Controller_Script>();
+		
+		parentControllerScript = this.gameObject.transform.parent.parent.GetComponent<Game_Phase_Controller_Script>();
 		//parentCannon.shootedBallStillExist = true;
 
 
@@ -31,7 +32,7 @@ public class cannonBallScript : MonoBehaviour
 	}
 	void Arrived()
 	{
-		this.gameObject.transform.parent.GetComponent<cannon_prefab_script>().shootedBallStillExist = false;
+		parentCannonRef.shootedBallStillExist = false;
 		Destroy(this.gameObject);
 		parentControllerScript.hitPlayerMapField(targetPos);
 	}
@@ -54,6 +55,12 @@ public class cannonBallScript : MonoBehaviour
 		speed = 10f;
 		maxTime = calculateTime(targetPos, startPos);
 		allowMomvement = true;
+	}
+
+	public void setTargetParentCannonRef(cannon_prefab_script _parentCannonRef)
+	{
+		parentCannonRef = _parentCannonRef;
+		parentCannonRef.shootedBallStillExist = true;
 	}
 
 	bool comparePosVector(Vector3 _vector1, Vector3 _vector2)

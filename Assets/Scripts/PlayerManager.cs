@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -156,8 +157,8 @@ public class PlayerManager : MonoBehaviour
         {
             if (playerCannonsToPut > 0)
             {
-                cannonTransparentPlayerInstance.checkIfPutCannonOnPlacetPossibleAndSet(playerMapCloneForPuttingWall, playerTiles, this);
-                playerCannonsToPut--;
+                if(cannonTransparentPlayerInstance.checkIfPutCannonOnPlacetPossibleAndSet(playerMapCloneForPuttingWall, playerTiles, this))
+                    playerCannonsToPut--;
             }
         }
 
@@ -267,9 +268,15 @@ public class PlayerManager : MonoBehaviour
         }
         if (tempTile.isOccupiedByCannonField)
         {
-            //playerTiles.Values.
-            //tempTile.isOccupiedByWall = false;
-            Debug.Log("Cannon name: " + tempTile.parentCannon.transform.localPosition);
+            var list = playerTiles.Where(kv => kv.Value.isOccupiedByCannonField && kv.Value.parentCannon == tempTile.parentCannon).Select(kv => kv.Value).ToArray();
+            cannonsList.Remove(tempTile.parentCannon);
+            cannon_prefab_script tempCannonRef = tempTile.parentCannon;
+            foreach (rampartTile singleTile in list)
+            {
+                singleTile.isOccupiedByCannonField = false;
+                singleTile.parentCannon = null;
+            }
+            Destroy(tempCannonRef.gameObject);
         }
     }
 
