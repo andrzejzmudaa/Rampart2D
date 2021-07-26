@@ -6,6 +6,7 @@ public class Game_Phase_Controller_Script : MonoBehaviour
 {
     public enum phase_Enum {GameNotStarted, Pause, Build, putCannons, Battle }
     private phase_Enum GameState;
+    public bool friendlyFireOn;
     public UnityEngine.UI.Slider slider;
     public UnityEngine.UI.Text displayText;
     public PlayerManager[] listOfPlayers;
@@ -47,15 +48,18 @@ public class Game_Phase_Controller_Script : MonoBehaviour
         return GameState;
     }
 
-    public void hitPlayerMapField(Vector3 _targerPos)
+    public void hitPlayerMapField(Vector3 _targerPos , PlayerManager _ballSourcePlayer)
     {
         if (listOfPlayers == null)
             return;
         foreach(PlayerManager player in listOfPlayers)
         {
-            Vector3Int targetPosInt = Vector3Int.FloorToInt(_targerPos);
-            //Debug.Log("Vector3 original: " + _targerPos + " Vector3Int: " + targetPosInt);
-            player.verifyPlayerFieldHit(targetPosInt);
+            if ((_ballSourcePlayer == player && friendlyFireOn) || _ballSourcePlayer != player)
+            {
+                Vector3Int targetPosInt = Vector3Int.FloorToInt(_targerPos);
+                //Debug.Log("Vector3 original: " + _targerPos + " Vector3Int: " + targetPosInt);
+                player.verifyPlayerFieldHit(targetPosInt);
+            }
         }
 
     }

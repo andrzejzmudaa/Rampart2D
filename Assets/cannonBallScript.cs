@@ -34,7 +34,7 @@ public class cannonBallScript : MonoBehaviour
 	{
 		parentCannonRef.shootedBallStillExist = false;
 		Destroy(this.gameObject);
-		parentControllerScript.hitPlayerMapField(targetPos);
+		parentControllerScript.hitPlayerMapField(targetPos , this.gameObject.transform.parent.GetComponent<PlayerManager>());
 	}
 
 	/// 
