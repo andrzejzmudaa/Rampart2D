@@ -118,6 +118,8 @@ public class PlayerManager : MonoBehaviour
                 if (!cannonsToPutCountedInFirstCycleOfPutCannonsPhase)
                 {
                     playerCannonsToPut += playerCannonsToPut = budzyn.processMap2D(playerTiles, mapBordersCounted, playerMap, playerColor);
+                    if (playerCannonsToPut > 99)
+                        playerCannonsToPut = 99;
                     cannonsToPutCountedInFirstCycleOfPutCannonsPhase = true;
                 }
                 cannonTransparentPlayerInstance.updatecannonAmmountToPutText(playerCannonsToPut);
