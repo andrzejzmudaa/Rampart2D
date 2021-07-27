@@ -20478,6 +20478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5873f288dbc0406438ccdc896e678fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  friendlyFireOn: 0
   slider: {fileID: 946479810}
   displayText: {fileID: 2034513527}
   listOfPlayers: []
