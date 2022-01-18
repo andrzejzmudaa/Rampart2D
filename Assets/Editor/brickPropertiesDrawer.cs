@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
 [CustomPropertyDrawer(typeof(brickPropertiesClass))]
 public class brickPropertiesDrawer : PropertyDrawer
 {
